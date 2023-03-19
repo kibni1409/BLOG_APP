@@ -8,6 +8,7 @@ export const SingInThunk = createAsyncThunk(
     try {
       let response = await UserAPI.SingIn(email, password)
       dispatch(UserSlice.actions.setUserAC(response.data.user))
+      localStorage.setItem('user', JSON.stringify(response.data.user))
     } catch (error) {
       rejectWithValue(error)
     }
@@ -18,7 +19,7 @@ export const SingUpThunk = createAsyncThunk(
   async function ({ username, email, password }, { rejectWithValue, dispatch }) {
     try {
       let response = await UserAPI.SingUp(username, email, password)
-      dispatch(UserSlice.actions.setUserAC(response.user.token))
+      dispatch(UserSlice.actions.setUserAC(response.user))
     } catch (error) {
       rejectWithValue(error)
     }
@@ -39,6 +40,7 @@ export const EditThunk = createAsyncThunk(
 export const OutThunk = createAsyncThunk('user/OutThunk', async function (_, { rejectWithValue, dispatch }) {
   try {
     dispatch(UserSlice.actions.outUserAC())
+    localStorage.setItem('user', '')
   } catch (error) {
     rejectWithValue(error)
   }
@@ -54,7 +56,8 @@ const UserSlice = createSlice({
       bio: null,
       image: null,
     },
-    statusLoading: '',
+    statusLoading: false,
+    error: '',
   },
   reducers: {
     setUserAC(state, { payload }) {
@@ -87,8 +90,9 @@ const UserSlice = createSlice({
       state.statusLoading = 'false'
     },
     [SingInThunk.rejected]: (state, action) => {
-      state.loading = 'false'
-      console.log(action.payload)
+      state.statusLoading = 'false'
+      state.error = action.payload
+      console.log('My error', action.payload)
     },
   },
 })

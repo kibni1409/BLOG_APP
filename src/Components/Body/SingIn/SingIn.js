@@ -14,25 +14,32 @@ const SingIn = () => {
       navigate('/article')
     }
   }, [state.user.username])
+  useEffect(() => {
+    if (state.statusLoading === false && state.error === '') {
+      success()
+    }
+    if (state.statusLoading === false && state.error !== '') {
+      error(state.error)
+    }
+  }, [state.statusLoading])
   const success = () => {
     messageApi.open({
       type: 'success',
       content: 'This is a success message',
     })
   }
-  const error = () => {
+  const error = (text) => {
     messageApi.open({
       type: 'error',
-      content: 'This is an error message',
+      content: text,
     })
   }
   const dispatch = useDispatch()
   const onFinish = (values) => {
-    success()
     dispatch(SingInThunk(values))
   }
   const onFinishFailed = () => {
-    error()
+    error('Не все поля заполнены')
   }
   return (
     <Form

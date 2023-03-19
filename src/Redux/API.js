@@ -48,21 +48,15 @@ export const ArticleAPI = {
   getArticlesFollow(limit = 20, offset = 0) {
     return instance.get('articles/feed?limit=' + limit + '&offset=' + offset).then((response) => response)
   },
-  getArticlesGlobally(tag = '', author = '', favorited = '', limit = 20, offset = 0) {
-    return instance
-      .get(
-        'articles?tag=' +
-          tag +
-          '&author=' +
-          author +
-          '&favorited=' +
-          favorited +
-          '&limit=' +
-          limit +
-          '&offset=' +
-          offset
-      )
-      .then((response) => response)
+  getArticlesGlobally(obj) {
+    let getArticle =
+      'articles?' +
+      (obj.tag ? 'tag=' + obj.tag : '') +
+      (obj.author ? '&author=' + obj.author : '') +
+      (obj.favorited ? '&favorited=' + obj.favorited : '') +
+      (obj.limit ? '&limit=' + obj.limit : '') +
+      (obj.offset ? '&offset=' + (obj.offset * (obj.limit ? obj.limit : 20) - 20) : '')
+    return instance.get(getArticle).then((response) => response)
   },
   createArticle(title, description, body, tagList) {
     return instance
@@ -76,7 +70,7 @@ export const ArticleAPI = {
       })
       .then((response) => response)
   },
-  getArticle(slug) {
+  getArticleSlug(slug) {
     return instance.get('articles/' + slug).then((response) => response)
   },
   updateArticle(slug, title, description, body) {

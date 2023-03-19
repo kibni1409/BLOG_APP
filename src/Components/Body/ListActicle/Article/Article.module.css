@@ -1,8 +1,12 @@
 .card{
-    border: 2px solid black;
     width: 921px;
-    margin: 5px auto;
+    margin: 20px auto;
     padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 15px;
+    box-shadow: 10px 10px 21px #d3d3d6, -10px -10px 21px #fff;
 }
 .header{
     display: flex;
@@ -16,7 +20,6 @@
     display: flex;
     flex-direction: column;
     justify-content: left;
-    border: 2px solid red;
     width: 642px;
     text-align: left;
 }
@@ -48,4 +51,27 @@ h2{
     justify-content: start;
     flex-wrap: wrap;
     text-overflow: ellipsis;
+}
+.body{
+    max-width: 550px;
+    overflow-wrap: break-word;
+}
+.profile{
+    display: flex;
+    flex-direction: row;
+    height: 46px;
+}
+.profile_nameBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.profile_img{
+    border-radius: 25px;
+}
+.profile_name{
+    font-size: 16px;
+}
+.profile_date{
+    color: rgba(0, 0, 0, 0.5);
 }

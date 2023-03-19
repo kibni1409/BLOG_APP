@@ -3,3 +3,7 @@
     flex-direction: row;
     justify-content: end;
 }
+.username{
+    color: white;
+    margin: 0 10px;
+}

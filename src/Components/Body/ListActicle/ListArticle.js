@@ -11,11 +11,11 @@ const ListArticle = React.memo(function ListArticle() {
   const state = useSelector((state) => state.Article)
   let ElementsArticle = []
   useEffect(() => {
-    dispatch(getArticleAllThunk())
+    dispatch(getArticleAllThunk({}))
   }, [])
-  if (state.article.articles !== []) {
-    ElementsArticle = state.article.articles.map((el) => <Article key={el.createdAt} el={el} />)
+  if (state.articles.length !== 0) {
+    ElementsArticle = state.articles.map((el, index) => <Article key={el.createdAt + index} big={false} el={el} />)
   }
-  return <div>{state.article.articles === [] ? <Spin /> : ElementsArticle}</div>
+  return <div>{state.statusLoading === true ? <Spin /> : ElementsArticle}</div>
 })
 export default ListArticle
