@@ -1,7 +1,13 @@
 import axios from 'axios'
 
+let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
+let token = user === null ? null : user.token
 const instance = axios.create({
   baseURL: 'https://blog.kata.academy/api/',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: 'Token ' + token,
+  },
 })
 
 export const UserAPI = {
@@ -86,6 +92,12 @@ export const ArticleAPI = {
   },
   deleteArticle(slug) {
     return instance.delete('articles/' + slug).then((response) => response)
+  },
+  favoriteArticle(slug) {
+    return instance.post('articles/' + slug + '/favorite').then((response) => response)
+  },
+  unFavoriteArticle(slug) {
+    return instance.delete('articles/' + slug + '/favorite').then((response) => response)
   },
 }
 

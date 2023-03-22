@@ -9,6 +9,7 @@ export const SingInThunk = createAsyncThunk(
       let response = await UserAPI.SingIn(email, password)
       dispatch(UserSlice.actions.setUserAC(response.data.user))
       localStorage.setItem('user', JSON.stringify(response.data.user))
+      dispatch(UserSlice.actions.setUserAC(response.data))
     } catch (error) {
       rejectWithValue(error)
     }

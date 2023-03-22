@@ -1,16 +1,16 @@
 import { NavLink, useParams } from 'react-router-dom'
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import { Avatar, Spin, Tag } from 'antd'
-import { LikeFilled, UserOutlined } from '@ant-design/icons'
+import { LikeFilled, LikeOutlined, UserOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getArticleSlugThunk } from '../../../../Redux/Article/ArticleReducer'
+import { deleteFavoriteThunk, getArticleSlugThunk, postFavoriteThunk } from '../../../../Redux/Article/ArticleReducer'
 
 import Style from './Article.module.css'
 
-const Article = ({ el, big }) => {
+const Article = memo(function Article({ el, big }) {
   const state = useSelector((state) => state.Article)
-  const stateUser = useSelector((state) => state.User)
+  const stateUser = localStorage.user ? JSON.parse(localStorage.user) : { username: null }
   const param = useParams()
   const dispatch = useDispatch()
   useEffect(() => {
@@ -19,10 +19,12 @@ const Article = ({ el, big }) => {
     }
   }, [])
   let ElementsTag = []
-  function OnClick() {
-    console.log(' + 1')
-  }
-  function Card({ type }) {
+
+  const Card = memo(function Card({ type }) {
+    function OnClick() {
+      if (type.favorited === true) dispatch(deleteFavoriteThunk({ slug: type.slug, big }))
+      if (type.favorited === false) dispatch(postFavoriteThunk({ slug: type.slug, big }))
+    }
     type.tagList.map((tag, index) => {
       if (tag !== '') {
         ElementsTag.push(
@@ -42,7 +44,15 @@ const Article = ({ el, big }) => {
               {big ? type.slug : <NavLink to={'/article/' + type.slug}>{type.slug}</NavLink>}
             </h2>
             <div className={Style.like}>
-              {stateUser.user.username ? <LikeFilled onClick={OnClick} /> : <LikeFilled />}
+              {stateUser.username ? (
+                type.favorited ? (
+                  <LikeOutlined onClick={OnClick} />
+                ) : (
+                  <LikeFilled onClick={OnClick} />
+                )
+              ) : (
+                <LikeFilled />
+              )}
               {type.favoritesCount}
             </div>
           </div>
@@ -63,7 +73,7 @@ const Article = ({ el, big }) => {
         </div>
       </div>
     )
-  }
+  })
   if (!el && state.slugArticles.article) {
     return <Card type={state.slugArticles.article} big={true} />
   }
@@ -71,6 +81,6 @@ const Article = ({ el, big }) => {
     return <Card type={el} big={false} />
   }
   return <Spin />
-}
+})
 
 export default Article

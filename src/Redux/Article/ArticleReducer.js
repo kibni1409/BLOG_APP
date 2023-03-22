@@ -14,6 +14,42 @@ export const getArticleAllThunk = createAsyncThunk(
   }
 )
 
+export const postFavoriteThunk = createAsyncThunk(
+  'user/postFavoriteThunk',
+  async function ({ slug, big }, { rejectWithValue, dispatch }) {
+    try {
+      let response = await ArticleAPI.favoriteArticle(slug)
+      if (big === false) {
+        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
+      }
+      if (big === true) {
+        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
+        dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+      }
+    } catch (error) {
+      rejectWithValue(error)
+    }
+  }
+)
+
+export const deleteFavoriteThunk = createAsyncThunk(
+  'user/deleteFavoriteThunk',
+  async function ({ slug, big }, { rejectWithValue, dispatch }) {
+    try {
+      let response = await ArticleAPI.unFavoriteArticle(slug)
+      if (big === false) {
+        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
+      }
+      if (big === true) {
+        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
+        dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+      }
+    } catch (error) {
+      rejectWithValue(error)
+    }
+  }
+)
+
 export const getArticleSlugThunk = createAsyncThunk(
   'user/getArticleSlugThunk',
   async function ({ slug }, { rejectWithValue, dispatch }) {
@@ -58,6 +94,18 @@ const ArticleSlice = createSlice({
     },
     setSlugArticleAC(state, { payload }) {
       state.slugArticles = payload
+    },
+    setFavoritedAC(state, { payload }) {
+      state.articles = state.articles.map((el) => {
+        if (el.slug === payload.article.slug) {
+          return {
+            ...el,
+            favorited: payload.article.favorited,
+          }
+        } else {
+          return el
+        }
+      })
     },
   },
   extraReducers: {
