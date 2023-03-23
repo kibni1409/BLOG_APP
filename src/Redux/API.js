@@ -1,12 +1,11 @@
 import axios from 'axios'
 
-let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
-let token = user === null ? null : user.token
+let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
 const instance = axios.create({
   baseURL: 'https://blog.kata.academy/api/',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: 'Token ' + token,
+    Authorization: 'Token ' + user.token,
   },
 })
 

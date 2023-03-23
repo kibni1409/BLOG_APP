@@ -91,12 +91,14 @@ const FormArticle = () => {
           maxWidth: 600,
         }}
         initialValues={
-          state.slugArticles.article
-            ? {
-                title: state.slugArticles.article.title,
-                description: state.slugArticles.article.description,
-                body: state.slugArticles.article.body,
-              }
+          mode === 'edit'
+            ? state.slugArticles.article
+              ? {
+                  title: state.slugArticles.article.title,
+                  description: state.slugArticles.article.description,
+                  body: state.slugArticles.article.body,
+                }
+              : null
             : null
         }
         onFinish={onFinish}

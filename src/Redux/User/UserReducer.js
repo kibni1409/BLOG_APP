@@ -21,7 +21,7 @@ export const SingUpThunk = createAsyncThunk(
     try {
       let response = await UserAPI.SingUp(username, email, password)
       dispatch(UserSlice.actions.setUserAC(response.user))
-      localStorage.setItem('user', JSON.stringify(response.data.user))
+      localStorage.setItem('user', JSON.stringify(response.user))
     } catch (error) {
       rejectWithValue(error)
     }
