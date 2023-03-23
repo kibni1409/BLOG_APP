@@ -75,3 +75,7 @@ h2{
 .profile_date{
     color: rgba(0, 0, 0, 0.5);
 }
+.buttons{
+    display: flex;
+    flex-direction: row;
+}

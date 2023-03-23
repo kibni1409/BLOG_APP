@@ -9,6 +9,8 @@ import SingUp from './Components/Body/SingUp/SingUp'
 import ListArticle from './Components/Body/ListActicle/ListArticle'
 import Article from './Components/Body/ListActicle/Article/Article'
 import PaginationJS from './Components/Footer/Pagination'
+import Profile from './Components/Body/Profile/Profile'
+import FormArticle from './Components/Body/FormArticle/FormArticle'
 
 function App() {
   const { Content, Footer } = Layout
@@ -20,8 +22,10 @@ function App() {
           <Outlet />
           <Routes>
             <Route path={'/'} element={<ListArticle />} />
-            <Route path={'/singin'} element={<SingIn />} />
-            <Route path={'/singup'} element={<SingUp />} />
+            <Route path={'/article-form/:mode'} element={<FormArticle />} />
+            <Route path={'/sing-in'} element={<SingIn />} />
+            <Route path={'/sing-up'} element={<SingUp />} />
+            <Route path={'/profile'} element={<Profile />} />
             <Route path={'/article'} element={<ListArticle />} />
             <Route path={'/article/:slug'} element={<Article big={true} />} />
           </Routes>

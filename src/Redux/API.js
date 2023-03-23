@@ -32,12 +32,9 @@ export const UserAPI = {
       })
       .then((response) => response)
   },
-  getUser() {
-    return instance.get('user').then((response) => response.data)
-  },
-  updateUser(username, email, password, bio, image) {
+  updateUser(username, email, password, bio = '', image = '') {
     return instance
-      .put('users', {
+      .put('user', {
         user: {
           email: email,
           password: password,
@@ -51,9 +48,6 @@ export const UserAPI = {
 }
 
 export const ArticleAPI = {
-  getArticlesFollow(limit = 20, offset = 0) {
-    return instance.get('articles/feed?limit=' + limit + '&offset=' + offset).then((response) => response)
-  },
   getArticlesGlobally(obj) {
     let getArticle =
       'articles?' +
@@ -68,10 +62,10 @@ export const ArticleAPI = {
     return instance
       .post('articles', {
         article: {
-          title: title,
-          description: description,
-          body: body,
-          tagList: [...tagList],
+          title,
+          description,
+          body,
+          tagList,
         },
       })
       .then((response) => response)
@@ -79,13 +73,14 @@ export const ArticleAPI = {
   getArticleSlug(slug) {
     return instance.get('articles/' + slug).then((response) => response)
   },
-  updateArticle(slug, title, description, body) {
+  updateArticle(slug, title, description, body, tagList) {
     return instance
-      .put('articles' + slug, {
+      .put('articles/' + slug, {
         article: {
-          title: title,
-          description: description,
-          body: body,
+          title,
+          description,
+          body,
+          tagList,
         },
       })
       .then((response) => response)
@@ -98,38 +93,5 @@ export const ArticleAPI = {
   },
   unFavoriteArticle(slug) {
     return instance.delete('articles/' + slug + '/favorite').then((response) => response)
-  },
-}
-
-export const CommentsAPI = {
-  getCommentsArticle(slug) {
-    return instance.get('articles/' + slug + '/comments').then((response) => response)
-  },
-  createComment(body, slug) {
-    return instance
-      .post('articles/' + slug + '/comments', {
-        comment: {
-          body: body,
-        },
-      })
-      .then((response) => response)
-  },
-  deleteComment(slug, id) {
-    return instance.delete('articles/' + slug + '/comments/' + id).then((response) => response)
-  },
-}
-
-export const FavoritesAPI = {
-  Follow(slug) {
-    return instance.post('articles/' + slug + '/favorite').then((response) => response)
-  },
-  UnFollow(slug) {
-    return instance.delete('articles/' + slug + '/favorite').then((response) => response)
-  },
-}
-
-export const TagsAPI = {
-  getTags() {
-    return instance.get('/tags').then((response) => response)
   },
 }

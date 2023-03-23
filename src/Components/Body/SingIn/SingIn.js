@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 import { SingInThunk } from '../../../Redux/User/UserReducer'
 
+import Style from './SingIn.module.css'
+
 const SingIn = () => {
   const state = useSelector((state) => state.User)
   const [messageApi, contextHolder] = message.useMessage()
@@ -42,73 +44,76 @@ const SingIn = () => {
     error('Не все поля заполнены')
   }
   return (
-    <Form
-      name="basic"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
-      style={{
-        maxWidth: 600,
-      }}
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      {contextHolder}
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your email!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
+    <div className={Style.form}>
+      <h2>Sing In</h2>
+      <Form
+        name="basic"
+        labelCol={{
+          span: 8,
+        }}
         wrapperCol={{
-          offset: 8,
           span: 16,
         }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
+        style={{
+          maxWidth: 600,
         }}
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
       >
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+        {contextHolder}
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your email!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   )
 }
 

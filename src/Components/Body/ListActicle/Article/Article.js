@@ -1,14 +1,22 @@
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, useNavigate, useParams } from 'react-router-dom'
 import React, { memo, useEffect } from 'react'
-import { Avatar, Spin, Tag } from 'antd'
+import { Avatar, Button, message, Popconfirm, Spin, Tag } from 'antd'
 import { LikeFilled, LikeOutlined, UserOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
+import ReactMarkdown from 'react-markdown'
 
-import { deleteFavoriteThunk, getArticleSlugThunk, postFavoriteThunk } from '../../../../Redux/Article/ArticleReducer'
+import {
+  deleteArticleThunk,
+  deleteFavoriteThunk,
+  getArticleSlugThunk,
+  postFavoriteThunk,
+} from '../../../../Redux/Article/ArticleReducer'
 
 import Style from './Article.module.css'
 
 const Article = memo(function Article({ el, big }) {
+  const navigate = useNavigate()
+  const [messageApi, contextHolder] = message.useMessage()
   const state = useSelector((state) => state.Article)
   const stateUser = localStorage.user ? JSON.parse(localStorage.user) : { username: null }
   const param = useParams()
@@ -19,8 +27,19 @@ const Article = memo(function Article({ el, big }) {
     }
   }, [])
   let ElementsTag = []
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'Success',
+    })
+  }
 
   const Card = memo(function Card({ type }) {
+    function Delete() {
+      dispatch(deleteArticleThunk(type.slug))
+      success()
+      navigate('/')
+    }
     function OnClick() {
       if (type.favorited === true) dispatch(deleteFavoriteThunk({ slug: type.slug, big }))
       if (type.favorited === false) dispatch(postFavoriteThunk({ slug: type.slug, big }))
@@ -38,6 +57,7 @@ const Article = memo(function Article({ el, big }) {
     let date = new Date(type.createdAt)
     return (
       <div key={type.article} className={Style.card}>
+        {contextHolder}
         <div className={Style.article}>
           <div className={Style.header}>
             <h2 className={Style.title}>
@@ -58,18 +78,34 @@ const Article = memo(function Article({ el, big }) {
           </div>
           <div className={Style.tag}>{ElementsTag}</div>
           <p className={Style.description}>{type.description}</p>
-          {big ? <p className={Style.body}>{type.body}</p> : null}
+          {big ? <ReactMarkdown>{type.body}</ReactMarkdown> : null}
         </div>
         <div className={Style.profile}>
           <div className={Style.profile_nameBlock}>
             <span className={Style.profile_name}>{type.author.username}</span>
             <span className={Style.profile_date}>{date.toLocaleDateString('en-US', options)}</span>
+            {big === true ? (
+              type.author.username === stateUser.username ? (
+                <div className={Style.buttons}>
+                  <Button>
+                    <NavLink to={'/article-form/edit'}>Edit</NavLink>
+                  </Button>
+                  <Popconfirm
+                    title="Delete the article"
+                    description="Are you sure to delete this article?"
+                    onConfirm={Delete}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button type="primary" danger ghost>
+                      Delete
+                    </Button>
+                  </Popconfirm>
+                </div>
+              ) : null
+            ) : null}
           </div>
-          {type.author.image ? (
-            <img className={Style.profile_img} alt={state} src={type.author.image} />
-          ) : (
-            <Avatar size={46} icon={<UserOutlined />} />
-          )}{' '}
+          <Avatar size={46} icon={<UserOutlined />} src={type.author.image} />
         </div>
       </div>
     )

@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { ArticleAPI } from '../API'
 
 export const getArticleAllThunk = createAsyncThunk(
-  'user/getArticleAllThunk',
+  'article/getArticleAllThunk',
   async function (page, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.getArticlesGlobally(page)
@@ -15,7 +15,7 @@ export const getArticleAllThunk = createAsyncThunk(
 )
 
 export const postFavoriteThunk = createAsyncThunk(
-  'user/postFavoriteThunk',
+  'article/postFavoriteThunk',
   async function ({ slug, big }, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.favoriteArticle(slug)
@@ -33,7 +33,7 @@ export const postFavoriteThunk = createAsyncThunk(
 )
 
 export const deleteFavoriteThunk = createAsyncThunk(
-  'user/deleteFavoriteThunk',
+  'article/deleteFavoriteThunk',
   async function ({ slug, big }, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.unFavoriteArticle(slug)
@@ -51,7 +51,7 @@ export const deleteFavoriteThunk = createAsyncThunk(
 )
 
 export const getArticleSlugThunk = createAsyncThunk(
-  'user/getArticleSlugThunk',
+  'article/getArticleSlugThunk',
   async function ({ slug }, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.getArticleSlug(slug)
@@ -62,8 +62,43 @@ export const getArticleSlugThunk = createAsyncThunk(
   }
 )
 
+export const postNewArticleThunk = createAsyncThunk(
+  'article/postNewArticleThunk',
+  async function ({ title, description, body, tagList }, { rejectWithValue, dispatch }) {
+    try {
+      let response = await ArticleAPI.createArticle(title, description, body, tagList)
+      dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+    } catch (error) {
+      rejectWithValue(error)
+    }
+  }
+)
+
+export const updateArticleThunk = createAsyncThunk(
+  'article/updateArticleThunk',
+  async function ({ slug, title, description, body, tagList }, { rejectWithValue, dispatch }) {
+    try {
+      let response = await ArticleAPI.updateArticle(slug, title, description, body, tagList)
+      dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+    } catch (error) {
+      rejectWithValue(error)
+    }
+  }
+)
+
+export const deleteArticleThunk = createAsyncThunk(
+  'article/deleteArticleThunk',
+  async function (slug, { rejectWithValue }) {
+    try {
+      await ArticleAPI.deleteArticle(slug)
+    } catch (error) {
+      rejectWithValue(error)
+    }
+  }
+)
+
 const ArticleSlice = createSlice({
-  name: 'User',
+  name: 'Article',
   initialState: {
     articles: [],
     slugArticles: {
@@ -101,6 +136,7 @@ const ArticleSlice = createSlice({
           return {
             ...el,
             favorited: payload.article.favorited,
+            favoritesCount: payload.article.favoritesCount,
           }
         } else {
           return el

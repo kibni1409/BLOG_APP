@@ -10,37 +10,53 @@ import Style from './Header.module.css'
 
 const HeaderComp = () => {
   const state = useSelector((state) => state.User)
-  useEffect(() => {}, [state.username])
+  useEffect(() => {}, [state.user])
   const dispatch = useDispatch()
-  let log = { username: '' }
-  if (localStorage.user) {
-    log = JSON.parse(localStorage.getItem('user'))
-  }
   const { Header } = Layout
   let ElementButton = () => {
     return (
       <div>
+        <span className={Style.username}>
+          <NavLink to="/">All articles</NavLink>
+        </span>
         <Button type={'primary'}>
-          <NavLink to="/singin">SingIn</NavLink>
+          <NavLink to="/sing-in">SingIn</NavLink>
         </Button>
         <Button>
-          <NavLink to="/singup">SingUp</NavLink>
+          <NavLink to="/sing-up">SingUp</NavLink>
         </Button>
       </div>
     )
   }
-  let ElementAvatar = () => {
+  let ElementAvatar = ({ user }) => {
+    let userParse = JSON.parse(user)
     return (
       <div>
-        <Avatar size={64} icon={<UserOutlined />} />
-        {<span className={Style.username}>{log.username}</span>}
+        <span className={Style.username}>
+          <NavLink to="/">All articles</NavLink>
+        </span>
+        <Button type="primary">
+          <NavLink to="/article-form/add">Add article</NavLink>
+        </Button>
+        <Avatar size={64} src={userParse.image} icon={<UserOutlined />} />
+        <span className={Style.username}>
+          <NavLink to="/profile">{userParse.username}</NavLink>
+        </span>
         <Button onClick={() => dispatch(OutThunk())}>
-          <NavLink to="/singin">LogOut</NavLink>
+          <NavLink to="/sing-in">LogOut</NavLink>
         </Button>
       </div>
     )
   }
-  return <Header className={Style.header}>{log.username === '' ? <ElementButton /> : <ElementAvatar />}</Header>
+  return (
+    <Header className={Style.header}>
+      {localStorage.getItem('user') === null ? (
+        <ElementButton />
+      ) : (
+        <ElementAvatar user={localStorage.getItem('user')} />
+      )}
+    </Header>
+  )
 }
 
 export default HeaderComp
