@@ -1,6 +1,9 @@
 import axios from 'axios'
 
 let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
+export function SetUserAPI() {
+  user = JSON.parse(localStorage.getItem('user'))
+}
 const instance = axios.create({
   baseURL: 'https://blog.kata.academy/api/',
   headers: {

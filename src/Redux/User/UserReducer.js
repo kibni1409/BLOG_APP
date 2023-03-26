@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { UserAPI } from '../API'
+import { SetUserAPI, UserAPI } from '../API'
 
 export const SingInThunk = createAsyncThunk(
   'user/SingInThunk',
@@ -10,6 +10,7 @@ export const SingInThunk = createAsyncThunk(
       dispatch(UserSlice.actions.setUserAC(response.data.user))
       localStorage.setItem('user', JSON.stringify(response.data.user))
       dispatch(UserSlice.actions.setUserAC(response.data))
+      SetUserAPI()
     } catch (error) {
       rejectWithValue(error)
     }
@@ -22,6 +23,7 @@ export const SingUpThunk = createAsyncThunk(
       let response = await UserAPI.SingUp(username, email, password)
       dispatch(UserSlice.actions.setUserAC(response.user))
       localStorage.setItem('user', JSON.stringify(response.user))
+      SetUserAPI()
     } catch (error) {
       rejectWithValue(error)
     }
