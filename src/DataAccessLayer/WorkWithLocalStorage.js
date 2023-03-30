@@ -1,16 +1,15 @@
 export function SetLocalStorage(name, data) {
   try {
-    if (localStorage.getItem(name) === null) {
-      localStorage.setItem(name, JSON.stringify(data))
-    }
+    localStorage.setItem(name, data)
   } catch (err) {
     throw Error(err.message)
   }
 }
 
 export function getLocalStorage(name) {
-  if (localStorage.getItem(name) !== null) {
-    return JSON.parse(localStorage.getItem(name))
+  let user = localStorage.getItem(name)
+  if (user !== 'undefined' && user !== null) {
+    return JSON.parse(user)
   } else {
     return null
   }
