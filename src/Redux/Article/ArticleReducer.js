@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { ArticleAPI } from '../API'
+import { ArticleAPI } from '../../DataAccessLayer/API'
 
 export const getArticleAllThunk = createAsyncThunk(
   'article/getArticleAllThunk',
@@ -67,6 +67,7 @@ export const postNewArticleThunk = createAsyncThunk(
   async function ({ title, description, body, tagList }, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.createArticle(title, description, body, tagList)
+      dispatch(getArticleAllThunk({}))
       dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
     } catch (error) {
       rejectWithValue(error)
@@ -80,6 +81,7 @@ export const updateArticleThunk = createAsyncThunk(
     try {
       let response = await ArticleAPI.updateArticle(slug, title, description, body, tagList)
       dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+      dispatch(getArticleAllThunk({}))
     } catch (error) {
       rejectWithValue(error)
     }

@@ -4,15 +4,19 @@ import { useDispatch } from 'react-redux'
 import TextArea from 'antd/es/input/TextArea'
 import { useNavigate } from 'react-router-dom'
 
+import { Avatar, Bio, Email, Password, Username } from '../../Validation'
 import { EditThunk } from '../../../Redux/User/UserReducer'
+import { RouteSignIN } from '../../../App'
+import { getLocalStorage } from '../../../DataAccessLayer/WorkWithLocalStorage'
 
 import Style from './Profile.module.css'
 
 const Profile = () => {
   const navigate = useNavigate()
+  let userLocal = getLocalStorage('user')
   useEffect(() => {
-    if (localStorage.getItem('user') === null) {
-      navigate('/sing-in')
+    if (userLocal === null) {
+      navigate(RouteSignIN)
     }
   }, [])
   const dispatch = useDispatch()
@@ -38,7 +42,16 @@ const Profile = () => {
     error('Не все поля заполнены')
   }
   const FormProfile = ({ user }) => {
-    let userParse = JSON.parse(user)
+    let userParse =
+      user !== null
+        ? user
+        : {
+            username: null,
+            email: null,
+            password: null,
+            bio: null,
+            image: null,
+          }
     return (
       <div className={Style.form}>
         <h2>Edit profile</h2>
@@ -65,96 +78,19 @@ const Profile = () => {
           autoComplete="off"
         >
           {contextHolder}
-          <Form.Item
-            label="Username"
-            name="username"
-            initialValue={user.username}
-            rules={[
-              {
-                required: true,
-                message: 'Please input your username!',
-              },
-              {
-                min: 4,
-                message: 'min 4 symbol',
-              },
-              {
-                max: 20,
-                message: 'max 20 symbol',
-              },
-            ]}
-          >
+          <Form.Item label="Username" name="username" rules={Username}>
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            initialValue={user.email}
-            rules={[
-              {
-                required: true,
-                message: 'Please input your email!',
-              },
-              {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
-                min: 4,
-                message: 'min 4 symbol',
-              },
-              {
-                max: 20,
-                message: 'max 20 symbol',
-              },
-            ]}
-          >
+          <Form.Item label="Email" name="email" rules={Email}>
             <Input />
           </Form.Item>
-
-          <Form.Item
-            label="New password"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your password!',
-              },
-              {
-                min: 6,
-                message: 'min 4 symbol',
-              },
-              {
-                max: 40,
-                message: 'max 20 symbol',
-              },
-            ]}
-          >
+          <Form.Item label="New password" name="password" rules={Password}>
             <Input.Password />
           </Form.Item>
-          <Form.Item
-            label="Bio"
-            name="bio"
-            initialValue={user.username}
-            rules={[
-              {
-                max: 200,
-                message: 'max 200 symbol',
-              },
-            ]}
-          >
+          <Form.Item label="Bio" name="bio" initialValue={user.username} rules={Bio}>
             <TextArea rows={4} />
           </Form.Item>
-          <Form.Item
-            label="Avatar (url)"
-            name="image"
-            rules={[
-              {
-                type: 'url',
-                message: 'url nut curren',
-              },
-            ]}
-          >
+          <Form.Item label="Avatar (url)" name="image" rules={Avatar}>
             <Input />
           </Form.Item>
           <Form.Item
@@ -171,15 +107,7 @@ const Profile = () => {
       </div>
     )
   }
-  return (
-    <div>
-      {localStorage.getItem('user') !== null ? (
-        <FormProfile user={localStorage.getItem('user')} />
-      ) : (
-        navigate('/sing-in')
-      )}
-    </div>
-  )
+  return <div>{userLocal !== null ? <FormProfile user={userLocal} /> : navigate(RouteSignIN)}</div>
 }
 
 export default Profile

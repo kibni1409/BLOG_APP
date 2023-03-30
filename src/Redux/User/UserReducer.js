@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-import { SetUserAPI, UserAPI } from '../API'
+import { UserAPI } from '../../DataAccessLayer/API'
+import { SetLocalStorage } from '../../DataAccessLayer/WorkWithLocalStorage'
 
 export const SingInThunk = createAsyncThunk(
   'user/SingInThunk',
@@ -8,9 +9,8 @@ export const SingInThunk = createAsyncThunk(
     try {
       let response = await UserAPI.SingIn(email, password)
       dispatch(UserSlice.actions.setUserAC(response.data.user))
-      localStorage.setItem('user', JSON.stringify(response.data.user))
+      SetLocalStorage('user', JSON.stringify(response.data.user))
       dispatch(UserSlice.actions.setUserAC(response.data))
-      SetUserAPI()
     } catch (error) {
       rejectWithValue(error)
     }
@@ -22,8 +22,7 @@ export const SingUpThunk = createAsyncThunk(
     try {
       let response = await UserAPI.SingUp(username, email, password)
       dispatch(UserSlice.actions.setUserAC(response.user))
-      localStorage.setItem('user', JSON.stringify(response.user))
-      SetUserAPI()
+      SetLocalStorage('user', JSON.stringify(response.user))
     } catch (error) {
       rejectWithValue(error)
     }
@@ -35,7 +34,7 @@ export const EditThunk = createAsyncThunk(
     try {
       let response = await UserAPI.updateUser(username, email, password, bio, image)
       dispatch(UserSlice.actions.setUserAC(response.user))
-      localStorage.setItem('user', JSON.stringify(response.user))
+      SetLocalStorage('user', JSON.stringify(response.user))
     } catch (error) {
       rejectWithValue(error)
     }
@@ -45,7 +44,7 @@ export const EditThunk = createAsyncThunk(
 export const OutThunk = createAsyncThunk('user/OutThunk', async function (_, { rejectWithValue, dispatch }) {
   try {
     dispatch(UserSlice.actions.outUserAC())
-    localStorage.removeItem('user')
+    SetLocalStorage('user')
   } catch (error) {
     rejectWithValue(error)
   }

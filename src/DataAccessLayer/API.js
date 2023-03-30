@@ -1,14 +1,10 @@
 import axios from 'axios'
 
-let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
-export function SetUserAPI() {
-  user = JSON.parse(localStorage.getItem('user'))
-}
 const instance = axios.create({
   baseURL: 'https://blog.kata.academy/api/',
   headers: {
     'Content-Type': 'application/json',
-    Authorization: 'Token ' + user.token,
+    Authorization: 'Token ',
   },
 })
 
@@ -61,39 +57,58 @@ export const ArticleAPI = {
     return instance.get(getArticle).then((response) => response)
   },
   createArticle(title, description, body, tagList) {
+    let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
     return instance
-      .post('articles', {
-        article: {
-          title,
-          description,
-          body,
-          tagList,
+      .post(
+        'articles',
+        {
+          article: {
+            title,
+            description,
+            body,
+            tagList,
+          },
         },
-      })
+        { headers: { Authorization: 'Token ' + user.token } }
+      )
       .then((response) => response)
   },
   getArticleSlug(slug) {
     return instance.get('articles/' + slug).then((response) => response)
   },
   updateArticle(slug, title, description, body, tagList) {
+    let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
     return instance
-      .put('articles/' + slug, {
-        article: {
-          title,
-          description,
-          body,
-          tagList,
+      .put(
+        'articles/' + slug,
+        {
+          article: {
+            title,
+            description,
+            body,
+            tagList,
+          },
         },
-      })
+        { headers: { Authorization: 'Token ' + user.token } }
+      )
       .then((response) => response)
   },
   deleteArticle(slug) {
-    return instance.delete('articles/' + slug).then((response) => response)
+    let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
+    return instance
+      .delete('articles/' + slug, { headers: { Authorization: 'Token ' + user.token } })
+      .then((response) => response)
   },
   favoriteArticle(slug) {
-    return instance.post('articles/' + slug + '/favorite').then((response) => response)
+    let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
+    return instance
+      .post('articles/' + slug + '/favorite', {}, { headers: { Authorization: 'Token ' + user.token } })
+      .then((response) => response)
   },
   unFavoriteArticle(slug) {
-    return instance.delete('articles/' + slug + '/favorite').then((response) => response)
+    let user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : { token: null }
+    return instance
+      .delete('articles/' + slug + '/favorite', { headers: { Authorization: 'Token ' + user.token } })
+      .then((response) => response)
   },
 }

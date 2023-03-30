@@ -11,6 +11,8 @@ import {
   getArticleSlugThunk,
   postFavoriteThunk,
 } from '../../../../Redux/Article/ArticleReducer'
+import { RouteArticle, RouteArticleFormWithEdit, RouteHome } from '../../../../App'
+import { getLocalStorage } from '../../../../DataAccessLayer/WorkWithLocalStorage'
 
 import Style from './Article.module.css'
 
@@ -18,7 +20,7 @@ const Article = memo(function Article({ el, big }) {
   const navigate = useNavigate()
   const [messageApi, contextHolder] = message.useMessage()
   const state = useSelector((state) => state.Article)
-  const stateUser = localStorage.user ? JSON.parse(localStorage.user) : { username: null }
+  const userLocal = getLocalStorage('user')
   const param = useParams()
   const dispatch = useDispatch()
   useEffect(() => {
@@ -38,7 +40,7 @@ const Article = memo(function Article({ el, big }) {
     function Delete() {
       dispatch(deleteArticleThunk(type.slug))
       success()
-      navigate('/')
+      navigate(RouteHome)
     }
     function OnClick() {
       if (type.favorited === true) dispatch(deleteFavoriteThunk({ slug: type.slug, big }))
@@ -61,10 +63,10 @@ const Article = memo(function Article({ el, big }) {
         <div className={Style.article}>
           <div className={Style.header}>
             <h2 className={Style.title}>
-              {big ? type.slug : <NavLink to={'/article/' + type.slug}>{type.slug}</NavLink>}
+              {big ? type.title : <NavLink to={RouteArticle + type.slug}>{type.title}</NavLink>}
             </h2>
             <div className={Style.like}>
-              {stateUser.username ? (
+              {userLocal.username ? (
                 type.favorited ? (
                   <LikeOutlined onClick={OnClick} />
                 ) : (
@@ -85,10 +87,10 @@ const Article = memo(function Article({ el, big }) {
             <span className={Style.profile_name}>{type.author.username}</span>
             <span className={Style.profile_date}>{date.toLocaleDateString('en-US', options)}</span>
             {big === true ? (
-              type.author.username === stateUser.username ? (
+              type.author.username === userLocal.username ? (
                 <div className={Style.buttons}>
                   <Button>
-                    <NavLink to={'/article-form/edit'}>Edit</NavLink>
+                    <NavLink to={RouteArticleFormWithEdit}>Edit</NavLink>
                   </Button>
                   <Popconfirm
                     title="Delete the article"

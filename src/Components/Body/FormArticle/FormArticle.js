@@ -8,6 +8,9 @@ import TextArea from 'antd/es/input/TextArea'
 import Search from 'antd/es/input/Search'
 
 import { postNewArticleThunk, updateArticleThunk } from '../../../Redux/Article/ArticleReducer'
+import { Body, Title } from '../../Validation'
+import { RouteArticle, RouteHome, RouteSignIN } from '../../../App'
+import { getLocalStorage } from '../../../DataAccessLayer/WorkWithLocalStorage'
 
 import Style from './FormArticle.module.css'
 
@@ -18,15 +21,16 @@ const FormArticle = () => {
   const [tagList, setTag] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  let userLocal = getLocalStorage('user')
   useEffect(() => {
-    if (localStorage.getItem('user') === null) {
-      navigate('/sing-in')
+    if (userLocal === null) {
+      navigate(RouteSignIN)
     }
     if (mode !== 'add' && mode !== 'edit') {
-      navigate('/sing-in')
+      navigate(RouteSignIN)
     }
     if (mode === 'edit' && state.slugArticles.article === undefined) {
-      navigate('/')
+      navigate(RouteHome)
     }
     if (state.slugArticles.article) {
       setTag(state.slugArticles.article.tagList)
@@ -50,13 +54,16 @@ const FormArticle = () => {
     })
   }
   const onFinish = ({ title, description, body }) => {
-    if (mode === 'add') dispatch(postNewArticleThunk({ title, description, body, tagList }))
+    if (mode === 'add') {
+      dispatch(postNewArticleThunk({ title, description, body, tagList }))
+      navigate(RouteHome)
+    }
     if (mode === 'edit') {
       let slug = state.slugArticles.article.slug
       dispatch(updateArticleThunk({ slug, title, description, body, tagList }))
+      navigate(RouteArticle + slug)
     }
     success()
-    navigate('/')
   }
   const onFinishFailed = () => {
     error('Не все поля заполнены')
@@ -105,43 +112,16 @@ const FormArticle = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <Form.Item
-          label="Title"
-          name="title"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your title!',
-            },
-          ]}
-        >
+        <Form.Item label="Title" name="title" rules={Title}>
           <Input />
         </Form.Item>
-        <Form.Item
-          label="Description"
-          name="description"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your description!',
-            },
-          ]}
-        >
+        <Form.Item label="Description" name="description" rules={Title}>
           <TextArea rows={4} />
         </Form.Item>
-        <Form.Item
-          label="Body"
-          name="body"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your body!',
-            },
-          ]}
-        >
+        <Form.Item label="Body" name="body" rules={Body}>
           <TextArea rows={6} />
         </Form.Item>
-        <Form.Item label="Tag" name="tag" rules={[]}>
+        <Form.Item label="Tag" name="tag">
           <Search placeholder="input tag" enterButton="Add" size="large" onSearch={AddTag} />
         </Form.Item>
         {ElementsTag}

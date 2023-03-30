@@ -8,10 +8,18 @@ import HeaderComp from './Components/Header/Header'
 import SingUp from './Components/Body/SingUp/SingUp'
 import ListArticle from './Components/Body/ListActicle/ListArticle'
 import Article from './Components/Body/ListActicle/Article/Article'
-import PaginationJS from './Components/Footer/Pagination'
 import Profile from './Components/Body/Profile/Profile'
 import FormArticle from './Components/Body/FormArticle/FormArticle'
 
+export const RouteHome = '/'
+export const RouteArticleFormWithMode = '/article-form/:mode'
+export const RouteArticleFormWithAdd = '/article-form/add'
+export const RouteArticleFormWithEdit = '/article-form/edit'
+export const RouteSignIN = '/sign-in'
+export const RouteSignUP = '/sign-up'
+export const RouteProfile = '/profile'
+export const RouteArticle = '/article/'
+export const RouteArticleWithSlug = '/article/:slug'
 function App() {
   const { Content, Footer } = Layout
   return (
@@ -21,19 +29,16 @@ function App() {
         <Content>
           <Outlet />
           <Routes>
-            <Route path={'/'} element={<ListArticle />} />
-            <Route path={'/article-form/:mode'} element={<FormArticle />} />
-            <Route path={'/sing-in'} element={<SingIn />} />
-            <Route path={'/sing-up'} element={<SingUp />} />
-            <Route path={'/profile'} element={<Profile />} />
-            <Route path={'/article'} element={<ListArticle />} />
-            <Route path={'/article/:slug'} element={<Article big={true} />} />
+            <Route path={RouteHome} element={<ListArticle />} />
+            <Route path={RouteArticleFormWithMode} element={<FormArticle />} />
+            <Route path={RouteSignIN} element={<SingIn />} />
+            <Route path={RouteSignUP} element={<SingUp />} />
+            <Route path={RouteProfile} element={<Profile />} />
+            <Route path={RouteArticle} element={<ListArticle />} />
+            <Route path={RouteArticleWithSlug} element={<Article big={true} />} />
           </Routes>
         </Content>
-        <Footer>
-          <PaginationJS />
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
+        <Footer>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>
     </div>
   )

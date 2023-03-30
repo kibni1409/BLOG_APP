@@ -1,9 +1,11 @@
 import { Button, Checkbox, Form, Input, message } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 import { SingUpThunk } from '../../../Redux/User/UserReducer'
+import { ConfirmPassword, Email, Password, Username } from '../../Validation'
+import { RouteArticle, RouteSignIN } from '../../../App'
 
 import Style from './SingUp.module.css'
 const SingUp = () => {
@@ -12,7 +14,7 @@ const SingUp = () => {
   const [messageApi, contextHolder] = message.useMessage()
   useEffect(() => {
     if (state.user.username !== null) {
-      navigate('/article')
+      navigate(RouteArticle)
     }
   }, [state.user.username])
   const success = () => {
@@ -37,17 +39,15 @@ const SingUp = () => {
   }
   return (
     <div className={Style.form}>
-      <h2>Sing Up</h2>
+      <h2>Create new Account</h2>
       <Form
         name="basic"
+        layout="vertical"
         labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
+          span: 10,
         }}
         style={{
-          maxWidth: 600,
+          maxWidth: 400,
         }}
         initialValues={{
           remember: true,
@@ -57,67 +57,39 @@ const SingUp = () => {
         autoComplete="off"
       >
         {contextHolder}
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your username!',
-            },
-          ]}
-        >
+        <Form.Item label="Username" name="username" rules={Username}>
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your email!',
-            },
-          ]}
-        >
+        <Form.Item label="Email" name="email" rules={Email}>
           <Input />
         </Form.Item>
 
+        <Form.Item label="Password" name="password" rules={Password}>
+          <Input.Password />
+        </Form.Item>
         <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
+          name="confirm"
+          label="Confirm Password"
+          dependencies={['password']}
+          hasFeedback
+          rules={ConfirmPassword}
         >
           <Input.Password />
         </Form.Item>
-
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
+        <Form.Item name="remember" valuePropName="checked">
+          <Checkbox>I agree to the processing of my personal information</Checkbox>
         </Form.Item>
 
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
+        <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            Create
           </Button>
         </Form.Item>
       </Form>
+      <span>
+        Already have an account? <NavLink to={RouteSignIN}>Sign In</NavLink>
+      </span>
     </div>
   )
 }

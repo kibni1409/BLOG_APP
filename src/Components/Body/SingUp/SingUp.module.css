@@ -1,4 +1,7 @@
 .form{
     margin: 0 auto;
-    width: 800px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

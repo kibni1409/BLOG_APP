@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { SingInThunk } from '../../../Redux/User/UserReducer'
+import { Email, Password } from '../../Validation'
+import { RouteArticle } from '../../../App'
 
 import Style from './SingIn.module.css'
 
@@ -13,7 +15,7 @@ const SingIn = () => {
   const navigate = useNavigate()
   useEffect(() => {
     if (state.user.username !== null) {
-      navigate('/article')
+      navigate(RouteArticle)
     }
   }, [state.user.username])
   useEffect(() => {
@@ -65,29 +67,11 @@ const SingIn = () => {
         autoComplete="off"
       >
         {contextHolder}
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your email!',
-            },
-          ]}
-        >
+        <Form.Item label="Email" name="email" rules={Email}>
           <Input />
         </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-        >
+        <Form.Item label="Password" name="password" rules={Password}>
           <Input.Password />
         </Form.Item>
 
