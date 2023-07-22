@@ -1,0 +1,30 @@
+.Input{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 5px;
+
+
+  &_input{
+    border: 2px solid #d3d3d6;
+    border-radius: 5px;
+    min-width: 300px;
+    padding: 3px;
+  }
+
+  &_error{
+    border: 2px solid red;
+    border-radius: 5px;
+    min-width: 300px;
+  }
+
+  &_label{
+    text-align: start;
+  }
+
+}
+
+.Error{
+  color: red;
+}

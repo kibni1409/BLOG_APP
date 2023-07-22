@@ -1,81 +1,59 @@
-export const Username = [
-  {
-    required: true,
-    message: 'Please input your username!',
-  },
-  {
-    min: 4,
-    message: 'min 4 symbol',
-  },
-  {
-    max: 20,
-    message: 'max 20 symbol',
-  },
-]
+export function UserNameValidate(name) {
+  if (name === '') {
+    return 'Empty name'
+  }
+  if (name.length < 4) {
+    return 'Min 4 symbol'
+  }
+  if (name.length > 20) {
+    return 'Max 20 symbol'
+  }
+  return false
+}
 
-export const Email = [
-  {
-    required: true,
-    message: 'Please input your email!',
-  },
-  {
-    type: 'email',
-    message: 'The input is not valid E-mail!',
-  },
-  {
-    min: 4,
-    message: 'min 4 symbol',
-  },
-  {
-    max: 20,
-    message: 'max 20 symbol',
-  },
-]
+export function EmailValidate(email) {
+  const re = /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i
+  if (email === '') {
+    return 'Please input your email!'
+  }
+  if (email.length < 4) {
+    return 'Min 4 symbol'
+  }
+  if (email.length > 20) {
+    return 'Max 20 symbol'
+  }
+  if (!re.test(email)) {
+    return 'Incorrect email'
+  }
+  return false
+}
 
-export const Password = [
-  {
-    required: true,
-    message: 'Please input your password!',
-  },
-  {
-    min: 6,
-    message: 'min 4 symbol',
-  },
-  {
-    max: 40,
-    message: 'max 20 symbol',
-  },
-]
+export function PasswordValidate(password) {
+  if (password === '') {
+    return 'Please input your email!'
+  }
+  if (password.length < 4) {
+    return 'Min 4 symbol'
+  }
+  if (password.length > 20) {
+    return 'Max 20 symbol'
+  }
+  return false
+}
 
-export const ConfirmPassword = [
-  {
-    required: true,
-    message: 'Please confirm your password!',
-  },
-  ({ getFieldValue }) => ({
-    validator(_, value) {
-      if (!value || getFieldValue('password') === value) {
-        return Promise.resolve()
-      }
-      return Promise.reject(new Error('The two passwords that you entered do not match!'))
-    },
-  }),
-]
+export function BioValidate(bio) {
+  if (bio.length > 200) {
+    return 'Max 200 symbol'
+  }
+  return false
+}
 
-export const Bio = [
-  {
-    max: 200,
-    message: 'max 200 symbol',
-  },
-]
-
-export const Avatar = [
-  {
-    type: 'url',
-    message: 'url nut curren',
-  },
-]
-
+export function AvatarValidate(url) {
+  const re = /[-a-zA-Z0-9@:%_\\+.~#?&\\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\\+.~#?&\\/=]*)?/gi
+  if (!re.test(url)) {
+    return 'Incorrect url'
+  }
+}
 export const Title = [
   {
     required: true,

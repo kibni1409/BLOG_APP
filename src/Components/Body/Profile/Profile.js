@@ -1,15 +1,14 @@
-import { Button, Form, Input, message } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import TextArea from 'antd/es/input/TextArea'
 import { useNavigate } from 'react-router-dom'
 
-import { Avatar, Bio, Email, Password, Username } from '../../Validation'
 import { EditThunk } from '../../../Redux/User/UserReducer'
 import { RouteSignIN } from '../../../App'
 import { getLocalStorage } from '../../../DataAccessLayer/WorkWithLocalStorage'
+import Input from '../Input/Input'
+import { AvatarValidate, BioValidate, EmailValidate, PasswordValidate, UserNameValidate } from '../../Validation'
 
-import Style from './Profile.module.css'
+import Form from './../Form/Form'
 
 const Profile = () => {
   const navigate = useNavigate()
@@ -20,94 +19,23 @@ const Profile = () => {
     }
   }, [])
   const dispatch = useDispatch()
-  const [messageApi, contextHolder] = message.useMessage()
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'This is a success message',
-    })
-  }
-  const error = (text) => {
-    messageApi.open({
-      type: 'error',
-      content: text,
-    })
-  }
   const onFinish = ({ username, email, password, bio, image }) => {
     dispatch(EditThunk({ username, email, password, bio, image }))
-    success()
     navigate('/')
   }
-  const onFinishFailed = () => {
-    error('Не все поля заполнены')
-  }
-  const FormProfile = ({ user }) => {
-    let userParse =
-      user !== null
-        ? user
-        : {
-            username: null,
-            email: null,
-            password: null,
-            bio: null,
-            image: null,
-          }
+  const FormProfile = () => {
     return (
-      <div className={Style.form}>
-        <h2>Edit profile</h2>
-        <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          initialValues={{
-            username: userParse.username,
-            email: userParse.email,
-            password: userParse.password,
-            bio: userParse.bio,
-            image: userParse.image,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          {contextHolder}
-          <Form.Item label="Username" name="username" rules={Username}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="Email" name="email" rules={Email}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="New password" name="password" rules={Password}>
-            <Input.Password />
-          </Form.Item>
-          <Form.Item label="Bio" name="bio" initialValue={user.username} rules={Bio}>
-            <TextArea rows={4} />
-          </Form.Item>
-          <Form.Item label="Avatar (url)" name="image" rules={Avatar}>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Button type="primary" htmlType="submit">
-              Save
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
+      <Form title={'Edit profile'} callBack={onFinish}>
+        <Input name={'username'} label={'UserName'} validator={UserNameValidate} />
+        <Input name={'email'} label={'Email'} validator={EmailValidate} type={'email'} />
+        <Input name={'password'} label={'New password'} validator={PasswordValidate} type={'password'} />
+        <Input name={'bio'} label={'Bio'} validator={BioValidate} />
+        <Input name={'avatar'} label={'Avatar'} type={'url'} validator={AvatarValidate} />
+        <button type={'submit'}>Save</button>
+      </Form>
     )
   }
-  return <div>{userLocal !== null ? <FormProfile user={userLocal} /> : navigate(RouteSignIN)}</div>
+  return <div>{userLocal !== null ? <FormProfile /> : navigate(RouteSignIN)}</div>
 }
 
 export default Profile

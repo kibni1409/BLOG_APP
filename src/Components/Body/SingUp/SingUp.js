@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import { SingUpThunk } from '../../../Redux/User/UserReducer'
-import { ConfirmPassword, Email, Password, Username } from '../../Validation'
 import { RouteArticle, RouteSignIN } from '../../../App'
 
 import Style from './SingUp.module.css'
@@ -57,24 +56,18 @@ const SingUp = () => {
         autoComplete="off"
       >
         {contextHolder}
-        <Form.Item label="Username" name="username" rules={Username}>
+        <Form.Item label="Username" name="username">
           <Input />
         </Form.Item>
 
-        <Form.Item label="Email" name="email" rules={Email}>
+        <Form.Item label="Email" name="email">
           <Input />
         </Form.Item>
 
-        <Form.Item label="Password" name="password" rules={Password}>
+        <Form.Item label="Password" name="password">
           <Input.Password />
         </Form.Item>
-        <Form.Item
-          name="confirm"
-          label="Confirm Password"
-          dependencies={['password']}
-          hasFeedback
-          rules={ConfirmPassword}
-        >
+        <Form.Item name="confirm" label="Confirm Password" dependencies={['password']} hasFeedback>
           <Input.Password />
         </Form.Item>
         <Form.Item name="remember" valuePropName="checked">

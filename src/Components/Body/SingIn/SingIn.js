@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { SingInThunk } from '../../../Redux/User/UserReducer'
-import { Email, Password } from '../../Validation'
 import { RouteArticle } from '../../../App'
 
 import Style from './SingIn.module.css'
@@ -67,11 +66,11 @@ const SingIn = () => {
         autoComplete="off"
       >
         {contextHolder}
-        <Form.Item label="Email" name="email" rules={Email}>
+        <Form.Item label="Email" name="email">
           <Input />
         </Form.Item>
 
-        <Form.Item label="Password" name="password" rules={Password}>
+        <Form.Item label="Password" name="password">
           <Input.Password />
         </Form.Item>
 

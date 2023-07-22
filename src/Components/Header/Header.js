@@ -1,8 +1,7 @@
 import { Avatar, Button, Layout } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { LogoutOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { OutThunk } from '../../Redux/User/UserReducer'
