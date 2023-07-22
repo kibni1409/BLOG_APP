@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { DeleteOutlined } from '@ant-design/icons'
 
 import Input from '../Input/Input'
@@ -6,18 +6,12 @@ import Button from '../Button/Button'
 
 import Style from './Tag.module.css'
 
-const Tag = ({ tittle, children }) => {
-  return (
-    <span className={Style.Tag}>
-      {children}
-      {tittle}
-    </span>
-  )
-}
-
-const TagList = () => {
+const TagList = ({ setTagList }) => {
   const ref = useRef()
   const [tagList, setTag] = useState([])
+  useEffect(() => {
+    setTagList(tagList)
+  }, [tagList])
 
   function AddTag(e) {
     if (!tagList.includes(ref.current.getValue())) {
@@ -26,7 +20,6 @@ const TagList = () => {
     } else {
       ref.current.clear()
     }
-
     e.preventDefault()
   }
 
@@ -36,9 +29,10 @@ const TagList = () => {
   }
 
   const ElementsTag = tagList.map((tag) => (
-    <Tag tittle={tag} key={tag}>
+    <span className={Style.Tag} key={tag}>
       <DeleteOutlined onClick={() => RemoveTag(tag)} />
-    </Tag>
+      {tag}
+    </span>
   ))
 
   return (
