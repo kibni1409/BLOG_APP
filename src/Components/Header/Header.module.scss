@@ -3,7 +3,10 @@
   flex-direction: row;
   justify-content: end;
   padding: 0 10px 0 10px;
-  height: auto;
+  align-items: center;
+  min-height: 50px;
+  column-gap: 10px;
+  background-color: #001529;
 }
 .username{
   color: white;

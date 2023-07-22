@@ -13,17 +13,29 @@
       -ms-flex-align: start;
           align-items: start;
   padding: 5px;
+  row-gap: 10px;
 }
 .Input_input {
   border: 2px solid #d3d3d6;
-  border-radius: 5px;
+  border-radius: 7px;
   min-width: 300px;
-  padding: 3px;
+  height: 40px;
+  padding: 10px;
+}
+.Input_input:hover {
+  border: 2px solid cadetblue;
+}
+.Input_input:focus {
+  outline: none;
+  border: 2px solid cadetblue;
 }
 .Input_error {
   border: 2px solid red;
   border-radius: 5px;
   min-width: 300px;
+  height: 40px;
+  padding: 10px;
+  outline: none;
 }
 .Input_label {
   text-align: start;

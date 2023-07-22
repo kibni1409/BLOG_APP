@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import { EditThunk } from '../../../Redux/User/UserReducer'
 import { RouteSignIN } from '../../../App'
 import { getLocalStorage } from '../../../DataAccessLayer/WorkWithLocalStorage'
-import Input from '../Input/Input'
+import Input from '../../Input/Input'
 import { AvatarValidate, BioValidate, EmailValidate, PasswordValidate, UserNameValidate } from '../../Validation'
-
-import Form from './../Form/Form'
+import Form from '../../Form/Form'
+import Button from '../../Button/Button'
 
 const Profile = () => {
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ const Profile = () => {
         <Input name={'password'} label={'New password'} validator={PasswordValidate} type={'password'} />
         <Input name={'bio'} label={'Bio'} validator={BioValidate} />
         <Input name={'avatar'} label={'Avatar'} type={'url'} validator={AvatarValidate} />
-        <button type={'submit'}>Save</button>
+        <Button type={'submit'} typeClass={'primary'} tittle={'Save'} />
       </Form>
     )
   }

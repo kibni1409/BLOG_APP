@@ -4,19 +4,33 @@
   justify-content: center;
   align-items: start;
   padding: 5px;
+  row-gap: 10px;
 
 
   &_input{
     border: 2px solid #d3d3d6;
-    border-radius: 5px;
+    border-radius: 7px;
     min-width: 300px;
-    padding: 3px;
+    height: 40px;
+    padding: 10px;
+
+    &:hover{
+      border: 2px solid cadetblue;
+    }
+
+    &:focus{
+      outline: none;
+      border: 2px solid cadetblue;
+    }
   }
 
   &_error{
     border: 2px solid red;
     border-radius: 5px;
     min-width: 300px;
+    height: 40px;
+    padding: 10px;
+    outline: none;
   }
 
   &_label{

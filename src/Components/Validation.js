@@ -53,24 +53,26 @@ export function AvatarValidate(url) {
   if (!re.test(url)) {
     return 'Incorrect url'
   }
+  return false
 }
-export const Title = [
-  {
-    required: true,
-    message: 'Please input your title!',
-  },
-]
 
-export const Description = [
-  {
-    required: true,
-    message: 'Please input your description!',
-  },
-]
+export function TittleValidate(tittle) {
+  if (tittle === '') {
+    return 'Please input your title!'
+  }
+  return false
+}
 
-export const Body = [
-  {
-    required: true,
-    message: 'Please input your body!',
-  },
-]
+export function DescriptionValidate(description) {
+  if (description === '') {
+    return 'Description input your title!'
+  }
+  return false
+}
+
+export function BodyValidate(body) {
+  if (body === '') {
+    return 'Body input your title!'
+  }
+  return false
+}

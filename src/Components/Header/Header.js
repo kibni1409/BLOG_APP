@@ -1,4 +1,4 @@
-import { Avatar, Button, Layout } from 'antd'
+import { Avatar } from 'antd'
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
 import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { OutThunk } from '../../Redux/User/UserReducer'
 import { RouteArticleFormWithAdd, RouteHome, RouteProfile, RouteSignIN, RouteSignUP } from '../../App'
 import { getLocalStorage } from '../../DataAccessLayer/WorkWithLocalStorage'
 
+import Button from './../Button/Button'
 import Style from './Header.module.css'
 
 const HeaderComp = () => {
@@ -15,20 +16,13 @@ const HeaderComp = () => {
   let userLocal = getLocalStorage('user')
   useEffect(() => {}, [state.user])
   const dispatch = useDispatch()
-  const { Header } = Layout
   let ElementButton = () => {
     return (
-      <div>
-        <span className={Style.username}>
-          <NavLink to={RouteHome}>All articles</NavLink>
-        </span>
-        <Button type={'primary'}>
-          <NavLink to={RouteSignIN}>SingIn</NavLink>
-        </Button>
-        <Button>
-          <NavLink to={RouteSignUP}>SingUp</NavLink>
-        </Button>
-      </div>
+      <>
+        <Button tittle={'All articles'} link={RouteHome} typeClass={'link'} />
+        <Button tittle={'SignIn'} link={RouteSignIN} typeClass={'primary'} />
+        <Button tittle={'SignUp'} link={RouteSignUP} typeClass={'primary'} />
+      </>
     )
   }
   let ElementAvatar = ({ user }) => {
@@ -40,28 +34,18 @@ const HeaderComp = () => {
             username: '',
           }
     return (
-      <div>
-        <span className={Style.username}>
-          <NavLink to={RouteHome}>All articles</NavLink>
-        </span>
-        <Button type="primary">
-          <NavLink to={RouteArticleFormWithAdd}>Add article</NavLink>
-        </Button>
-        <span className={Style.username}>
-          <NavLink to={RouteProfile}>
-            <Avatar size={44} src={userParse.image} icon={<UserOutlined />} />
-          </NavLink>
-        </span>
-        <Button onClick={() => dispatch(OutThunk())} icon={<LogoutOutlined />}>
-          <NavLink to={RouteSignIN}></NavLink>
-        </Button>
-      </div>
+      <>
+        <Button tittle={'All articles'} link={RouteHome} typeClass={'link'} />
+        <Button tittle={'Add article'} link={RouteArticleFormWithAdd} typeClass={'primary'} />
+        <NavLink to={RouteProfile}>
+          <Avatar size={44} src={userParse.image} icon={<UserOutlined />} />
+        </NavLink>
+        <Button callBack={() => dispatch(OutThunk())} icon={<LogoutOutlined />} link={RouteSignIN} />
+      </>
     )
   }
   return (
-    <Header className={Style.header}>
-      {userLocal === null ? <ElementButton /> : <ElementAvatar user={userLocal} />}
-    </Header>
+    <div className={Style.header}>{userLocal === null ? <ElementButton /> : <ElementAvatar user={userLocal} />}</div>
   )
 }
 

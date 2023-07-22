@@ -1,102 +1,42 @@
-import { Button, Checkbox, Form, Input, message } from 'antd'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { SingInThunk } from '../../../Redux/User/UserReducer'
 import { RouteArticle } from '../../../App'
-
-import Style from './SingIn.module.css'
+import { EmailValidate, PasswordValidate } from '../../Validation'
+import Input from '../../Input/Input'
+import Form from '../../Form/Form'
+import Button from '../../Button/Button'
 
 const SingIn = () => {
   const state = useSelector((state) => state.User)
-  const [messageApi, contextHolder] = message.useMessage()
   const navigate = useNavigate()
   useEffect(() => {
     if (state.user.username !== null) {
       navigate(RouteArticle)
     }
   }, [state.user.username])
-  useEffect(() => {
-    if (state.statusLoading === false && state.error === '') {
-      success()
-    }
-    if (state.statusLoading === false && state.error !== '') {
-      error(state.error)
-    }
-  }, [state.statusLoading])
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'This is a success message',
-    })
-  }
-  const error = (text) => {
-    messageApi.open({
-      type: 'error',
-      content: text,
-    })
-  }
+
   const dispatch = useDispatch()
-  const onFinish = (values) => {
-    dispatch(SingInThunk(values))
-  }
-  const onFinishFailed = () => {
-    error('Не все поля заполнены')
+  const onFinish = (e) => {
+    const valueForm = {
+      email: e.target[0].value,
+      password: e.target[1].value,
+    }
+    dispatch(SingInThunk(valueForm))
+    e.preventDefault()
   }
   return (
-    <div className={Style.form}>
-      <h2>Sing In</h2>
-      <Form
-        name="basic"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
-        style={{
-          maxWidth: 600,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        {contextHolder}
-        <Form.Item label="Email" name="email">
-          <Input />
-        </Form.Item>
-
-        <Form.Item label="Password" name="password">
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+    <Form title={'Sing In'} callBack={onFinish}>
+      <Input label={'Email'} name={'email'} validator={EmailValidate} />
+      <Input label={'Password'} name={'password'} validator={PasswordValidate} />
+      <label>
+        Remember me
+        <input type={'checkbox'} />
+      </label>
+      <Button type={'submit'} typeClass={'primary'} tittle={'SignIn'} />
+    </Form>
   )
 }
 

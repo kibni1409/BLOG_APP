@@ -1,0 +1,28 @@
+.Tag {
+  display: inline-block;
+  float: left;
+  background-color: #e3e3e3;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  padding: 5px;
+  max-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.TagList {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-column-gap: 5px;
+     -moz-column-gap: 5px;
+          column-gap: 5px;
+  row-gap: 10px;
+}
