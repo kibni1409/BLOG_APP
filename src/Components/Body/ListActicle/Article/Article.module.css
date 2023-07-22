@@ -1,5 +1,5 @@
 .card{
-    width: 921px;
+    min-width: 320px;
     margin: 20px auto;
     padding: 10px;
     display: flex;
@@ -68,6 +68,8 @@ h2{
 }
 .profile_img{
     border-radius: 25px;
+    width: 44px;
+    height: 44px;
 }
 .profile_name{
     font-size: 16px;

@@ -13,7 +13,7 @@ const ListArticle = React.memo(function ListArticle() {
   const [loading, setLoading] = useState(state.statusLoading)
   let ElementsArticle = []
   useEffect(() => {
-    dispatch(getArticleAllThunk({}))
+    dispatch(getArticleAllThunk(0))
   }, [])
   useEffect(() => {
     setLoading(state.statusLoading)

@@ -1,9 +1,19 @@
-.header{
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+  padding: 0 10px 0 10px;
+  height: auto;
 }
-.username{
-    color: white;
-    margin: 0 10px;
+
+.username {
+  color: white;
+  margin: 0 10px;
 }

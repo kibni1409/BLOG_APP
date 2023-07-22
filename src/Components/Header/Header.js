@@ -2,6 +2,7 @@ import { Avatar, Button, Layout } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
+import { LogoutOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { OutThunk } from '../../Redux/User/UserReducer'
@@ -47,12 +48,13 @@ const HeaderComp = () => {
         <Button type="primary">
           <NavLink to={RouteArticleFormWithAdd}>Add article</NavLink>
         </Button>
-        <Avatar size={64} src={userParse.image} icon={<UserOutlined />} />
         <span className={Style.username}>
-          <NavLink to={RouteProfile}>{userParse.username}</NavLink>
+          <NavLink to={RouteProfile}>
+            <Avatar size={44} src={userParse.image} icon={<UserOutlined />} />
+          </NavLink>
         </span>
-        <Button onClick={() => dispatch(OutThunk())}>
-          <NavLink to={RouteSignIN}>LogOut</NavLink>
+        <Button onClick={() => dispatch(OutThunk())} icon={<LogoutOutlined />}>
+          <NavLink to={RouteSignIN}></NavLink>
         </Button>
       </div>
     )
