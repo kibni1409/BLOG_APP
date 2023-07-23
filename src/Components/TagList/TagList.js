@@ -6,11 +6,12 @@ import Button from '../Button/Button'
 
 import Style from './Tag.module.css'
 
-const TagList = ({ setTagList }) => {
+const TagList = ({ setTagList, getTagList }) => {
   const ref = useRef()
   const [tagList, setTag] = useState([])
   useEffect(() => {
-    setTagList(tagList)
+    if (setTagList) setTagList(tagList)
+    if (getTagList) setTag(getTagList)
   }, [tagList])
 
   function AddTag(e) {
@@ -30,16 +31,18 @@ const TagList = ({ setTagList }) => {
 
   const ElementsTag = tagList.map((tag) => (
     <span className={Style.Tag} key={tag}>
-      <DeleteOutlined onClick={() => RemoveTag(tag)} />
+      {getTagList ? null : <DeleteOutlined onClick={() => RemoveTag(tag)} />}
       {tag}
     </span>
   ))
 
   return (
     <div className={Style.TagList}>
-      <Input ref={ref} label={'Tags'} name={'tags'}>
-        <Button type={'submit'} typeClass={'primary'} tittle={'Add Tag'} callBack={AddTag} />
-      </Input>
+      {getTagList ? null : (
+        <Input ref={ref} label={'Tags'} name={'tags'}>
+          <Button type={'submit'} typeClass={'primary'} tittle={'Add Tag'} callBack={AddTag} />
+        </Input>
+      )}
       {ElementsTag}
     </div>
   )

@@ -33,14 +33,20 @@ const FormArticle = () => {
       setList(state.slugArticles.article.tagList)
     }
   }, [])
-  const onFinish = ({ title, description, body }) => {
+  const onFinish = (e) => {
+    const objForm = {
+      title: e.target[0].value,
+      description: e.target[1].value,
+      body: e.target[2].value,
+      list,
+    }
     if (mode === 'add') {
-      dispatch(postNewArticleThunk({ title, description, body, list }))
+      dispatch(postNewArticleThunk(objForm))
       navigate(RouteHome)
     }
     if (mode === 'edit') {
       let slug = state.slugArticles.article.slug
-      dispatch(updateArticleThunk({ slug, title, description, body, list }))
+      dispatch(updateArticleThunk(objForm))
       navigate(RouteArticle + slug)
     }
   }

@@ -19,7 +19,7 @@ const ListArticle = React.memo(function ListArticle() {
     setLoading(state.statusLoading)
   }, [state.statusLoading])
   if (state.articles.length !== 0) {
-    ElementsArticle = state.articles.map((el, index) => <Article key={el.createdAt + index} big={false} el={el} />)
+    ElementsArticle = state.articles.map((el, index) => <Article key={el.createdAt + index} el={el} />)
   }
   return (
     <div>

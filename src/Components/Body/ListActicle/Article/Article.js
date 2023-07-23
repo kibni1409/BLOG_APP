@@ -1,7 +1,7 @@
 import { NavLink, useNavigate, useParams } from 'react-router-dom'
 import React, { memo, useEffect } from 'react'
-import { Avatar, Button, message, Popconfirm, Spin, Tag } from 'antd'
-import { LikeFilled, LikeOutlined, UserOutlined } from '@ant-design/icons'
+import { Spin } from 'antd'
+import { LikeFilled, LikeOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
 
@@ -13,14 +13,92 @@ import {
 } from '../../../../Redux/Article/ArticleReducer'
 import { RouteArticle, RouteArticleFormWithEdit, RouteHome } from '../../../../App'
 import { getLocalStorage } from '../../../../DataAccessLayer/WorkWithLocalStorage'
+import TagList from '../../../TagList/TagList'
 
+import Button from './../../../Button/Button'
+import Avatar from './../../../Avatar/Avatar'
 import Style from './Article.module.css'
 
-const Article = memo(function Article({ el, big }) {
+const HeaderCard = ({ type, userLocal, dispatch, big }) => {
+  function OnClick() {
+    if (type.favorited === true) dispatch(deleteFavoriteThunk({ slug: type.slug, big }))
+    if (type.favorited === false) dispatch(postFavoriteThunk({ slug: type.slug, big }))
+  }
+  return (
+    <>
+      <div className={Style.header}>
+        <h2 className={Style.title}>
+          {big ? type.title : <NavLink to={RouteArticle + type.slug}>{type.title}</NavLink>}
+        </h2>
+        <div className={Style.like}>
+          {userLocal.username ? (
+            type.favorited ? (
+              <LikeOutlined onClick={OnClick} />
+            ) : (
+              <LikeFilled onClick={OnClick} />
+            )
+          ) : (
+            <LikeFilled />
+          )}
+          {type.favoritesCount}
+        </div>
+      </div>
+      <TagList getTagList={type.tagList} />
+    </>
+  )
+}
+
+const BodyCard = ({ type, big }) => {
+  return (
+    <>
+      <p className={Style.description}>{type.description}</p>
+      {big ? <ReactMarkdown>{type.body}</ReactMarkdown> : null}
+    </>
+  )
+}
+
+const ProfileCard = ({ userLocal, big, type, dispatch }) => {
+  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+  let date = new Date(type.createdAt)
   const navigate = useNavigate()
-  const [messageApi, contextHolder] = message.useMessage()
-  const state = useSelector((state) => state.Article)
+  function DeleteArticle() {
+    dispatch(deleteArticleThunk(type.slug))
+    navigate(RouteHome)
+  }
+  return (
+    <div className={Style.profile}>
+      <div className={Style.profile_nameBlock}>
+        <span className={Style.profile_name}>{type.author.username}</span>
+        <span className={Style.profile_date}>{date.toLocaleDateString('en-US', options)}</span>
+        {big ? (
+          type.author.username === userLocal.username ? (
+            <div className={Style.buttons}>
+              <Button link={RouteArticleFormWithEdit} tittle={'Edit'} typeClass={'primary'} />
+              <Button tittle={'Delete'} typeClass={'link'} callBack={DeleteArticle} />
+            </div>
+          ) : null
+        ) : null}
+      </div>
+      <Avatar source={type.author.image} />
+    </div>
+  )
+}
+
+const Card = memo(function Card({ type, dispatch, big }) {
   const userLocal = getLocalStorage('user')
+  return (
+    <div key={type.article} className={Style.card}>
+      <div className={Style.article}>
+        <HeaderCard type={type} userLocal={userLocal} dispatch={dispatch} big={big} />
+        <BodyCard type={type} big={big} />
+      </div>
+      <ProfileCard userLocal={userLocal} big={big} type={type} dispatch={dispatch} />
+    </div>
+  )
+})
+
+const Article = memo(function Article({ el }) {
+  const state = useSelector((state) => state.Article)
   const param = useParams()
   const dispatch = useDispatch()
   useEffect(() => {
@@ -28,95 +106,12 @@ const Article = memo(function Article({ el, big }) {
       dispatch(getArticleSlugThunk(param))
     }
   }, [])
-  let ElementsTag = []
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Success',
-    })
-  }
 
-  const Card = memo(function Card({ type }) {
-    function Delete() {
-      dispatch(deleteArticleThunk(type.slug))
-      success()
-      navigate(RouteHome)
-    }
-    function OnClick() {
-      if (type.favorited === true) dispatch(deleteFavoriteThunk({ slug: type.slug, big }))
-      if (type.favorited === false) dispatch(postFavoriteThunk({ slug: type.slug, big }))
-    }
-    type.tagList.map((tag, index) => {
-      if (tag !== '') {
-        ElementsTag.push(
-          <Tag className={Style.Tag} key={index}>
-            {tag}
-          </Tag>
-        )
-      }
-    })
-    let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-    let date = new Date(type.createdAt)
-    return (
-      <div key={type.article} className={Style.card}>
-        {contextHolder}
-        <div className={Style.article}>
-          <div className={Style.header}>
-            <h2 className={Style.title}>
-              {big ? type.title : <NavLink to={RouteArticle + type.slug}>{type.title}</NavLink>}
-            </h2>
-            <div className={Style.like}>
-              {userLocal.username ? (
-                type.favorited ? (
-                  <LikeOutlined onClick={OnClick} />
-                ) : (
-                  <LikeFilled onClick={OnClick} />
-                )
-              ) : (
-                <LikeFilled />
-              )}
-              {type.favoritesCount}
-            </div>
-          </div>
-          <div className={Style.tag}>{ElementsTag}</div>
-          <p className={Style.description}>{type.description}</p>
-          {big ? <ReactMarkdown>{type.body}</ReactMarkdown> : null}
-        </div>
-        <div className={Style.profile}>
-          <div className={Style.profile_nameBlock}>
-            <span className={Style.profile_name}>{type.author.username}</span>
-            <span className={Style.profile_date}>{date.toLocaleDateString('en-US', options)}</span>
-            {big === true ? (
-              type.author.username === userLocal.username ? (
-                <div className={Style.buttons}>
-                  <Button>
-                    <NavLink to={RouteArticleFormWithEdit}>Edit</NavLink>
-                  </Button>
-                  <Popconfirm
-                    title="Delete the article"
-                    description="Are you sure to delete this article?"
-                    onConfirm={Delete}
-                    okText="Yes"
-                    cancelText="No"
-                  >
-                    <Button type="primary" danger ghost>
-                      Delete
-                    </Button>
-                  </Popconfirm>
-                </div>
-              ) : null
-            ) : null}
-          </div>
-          <Avatar size={46} icon={<UserOutlined />} src={type.author.image} />
-        </div>
-      </div>
-    )
-  })
   if (!el && state.slugArticles.article) {
-    return <Card type={state.slugArticles.article} big={true} />
+    return <Card type={state.slugArticles.article} dispatch={dispatch} big />
   }
   if (el) {
-    return <Card type={el} big={false} />
+    return <Card type={el} dispatch={dispatch} />
   }
   return <Spin />
 })
