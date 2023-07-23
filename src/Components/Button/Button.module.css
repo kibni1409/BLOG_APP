@@ -1,0 +1,42 @@
+.Button {
+  padding: 5px;
+  border-radius: 10px;
+  height: 35px;
+  min-width: 35px;
+}
+.Button_primary {
+  background-color: #57c296;
+  border: none;
+  color: white;
+  min-width: 60px;
+  outline: none;
+}
+.Button_primary :hover {
+  cursor: pointer;
+}
+.Button_primary a {
+  color: white;
+}
+.Button_default {
+  background: none;
+}
+.Button_default a {
+  color: white;
+}
+.Button_disabled {
+  border: none;
+  background: #4e5462;
+}
+.Button_disabled a {
+  color: gray;
+}
+.Button_disabled :hover {
+  cursor: no-drop;
+}
+.Button_link {
+  border: none;
+  background: none;
+}
+.Button_link a {
+  color: #57c296;
+}
