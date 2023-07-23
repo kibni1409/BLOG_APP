@@ -10,13 +10,13 @@ import {
   deleteFavoriteThunk,
   getArticleSlugThunk,
   postFavoriteThunk,
-} from '../../../../Redux/Article/ArticleReducer'
-import { RouteArticle, RouteArticleFormWithEdit, RouteHome } from '../../../../App'
+} from '../../../../Redux/Article/ArticleSlice'
+import { RouteArticle, RouteArticleFormWithEdit, RouteHome } from '../../../../RoutePath'
 import { getLocalStorage } from '../../../../DataAccessLayer/WorkWithLocalStorage'
-import TagList from '../../../TagList/TagList'
+import TagList from '../../../../Components/TagList/TagList'
+import Button from '../../../../Components/Button/Button'
+import Avatar from '../../../../Components/Avatar/Avatar'
 
-import Button from './../../../Button/Button'
-import Avatar from './../../../Avatar/Avatar'
 import Style from './Article.module.css'
 
 const HeaderCard = ({ type, userLocal, dispatch, big }) => {

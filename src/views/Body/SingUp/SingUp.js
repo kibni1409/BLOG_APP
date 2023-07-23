@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 
-import { SingUpThunk } from '../../../Redux/User/UserReducer'
-import { RouteArticle, RouteSignIN } from '../../../App'
-import { EmailValidate, PasswordValidate, UserNameValidate } from '../../Validation'
-import Input from '../../Input/Input'
-import Form from '../../Form/Form'
-import Button from '../../Button/Button'
+import { SingUpThunk } from '../../../Redux/User/UserSlice'
+import { RouteArticle, RouteSignIN } from '../../../RoutePath'
+import { EmailValidate, PasswordValidate, UserNameValidate } from '../../../Validation'
+import Input from '../../../Components/Input/Input'
+import Form from '../../../Components/Form/Form'
+import Button from '../../../Components/Button/Button'
 const SingUp = () => {
   const state = useSelector((state) => state.User)
   const navigate = useNavigate()

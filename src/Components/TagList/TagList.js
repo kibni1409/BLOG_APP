@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { DeleteOutlined } from '@ant-design/icons'
+import { v4 as uuidv4 } from 'uuid'
 
 import Input from '../Input/Input'
 import Button from '../Button/Button'
@@ -30,7 +31,7 @@ const TagList = ({ setTagList, getTagList }) => {
   }
 
   const ElementsTag = tagList.map((tag) => (
-    <span className={Style.Tag} key={tag}>
+    <span className={Style.Tag} key={uuidv4()}>
       {getTagList ? null : <DeleteOutlined onClick={() => RemoveTag(tag)} />}
       {tag}
     </span>

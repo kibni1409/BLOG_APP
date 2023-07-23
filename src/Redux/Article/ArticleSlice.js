@@ -2,12 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 import { ArticleAPI } from '../../DataAccessLayer/API'
 
+import { ActicleInitialState } from './ActicleInitialState'
+
 export const getArticleAllThunk = createAsyncThunk(
   'article/getArticleAllThunk',
   async function (page, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.getArticlesGlobally(page)
-      dispatch(ArticleSlice.actions.setArticleAC(response.data))
+      dispatch(setArticleAC(response.data))
     } catch (error) {
       rejectWithValue(error)
     }
@@ -20,11 +22,11 @@ export const postFavoriteThunk = createAsyncThunk(
     try {
       let response = await ArticleAPI.favoriteArticle(slug)
       if (big === false) {
-        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
+        dispatch(setFavoritedAC(response.data))
       }
       if (big === true) {
-        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
-        dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+        dispatch(setFavoritedAC(response.data))
+        dispatch(setSlugArticleAC(response.data))
       }
     } catch (error) {
       rejectWithValue(error)
@@ -38,11 +40,11 @@ export const deleteFavoriteThunk = createAsyncThunk(
     try {
       let response = await ArticleAPI.unFavoriteArticle(slug)
       if (big === false) {
-        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
+        dispatch(setFavoritedAC(response.data))
       }
       if (big === true) {
-        dispatch(ArticleSlice.actions.setFavoritedAC(response.data))
-        dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+        dispatch(setFavoritedAC(response.data))
+        dispatch(setSlugArticleAC(response.data))
       }
     } catch (error) {
       rejectWithValue(error)
@@ -55,7 +57,7 @@ export const getArticleSlugThunk = createAsyncThunk(
   async function ({ slug }, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.getArticleSlug(slug)
-      dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+      dispatch(setSlugArticleAC(response.data))
     } catch (error) {
       rejectWithValue(error)
     }
@@ -68,7 +70,7 @@ export const postNewArticleThunk = createAsyncThunk(
     try {
       let response = await ArticleAPI.createArticle(title, description, body, tagList)
       dispatch(getArticleAllThunk({}))
-      dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+      dispatch(setSlugArticleAC(response.data))
     } catch (error) {
       rejectWithValue(error)
     }
@@ -80,7 +82,7 @@ export const updateArticleThunk = createAsyncThunk(
   async function ({ slug, title, description, body, tagList }, { rejectWithValue, dispatch }) {
     try {
       let response = await ArticleAPI.updateArticle(slug, title, description, body, tagList)
-      dispatch(ArticleSlice.actions.setSlugArticleAC(response.data))
+      dispatch(setSlugArticleAC(response.data))
       dispatch(getArticleAllThunk({}))
     } catch (error) {
       rejectWithValue(error)
@@ -101,29 +103,7 @@ export const deleteArticleThunk = createAsyncThunk(
 
 const ArticleSlice = createSlice({
   name: 'Article',
-  initialState: {
-    articles: [],
-    slugArticles: {
-      slug: null,
-      title: null,
-      description: null,
-      body: null,
-      tagList: [null],
-      createdAt: null,
-      updatedAt: null,
-      favorited: true,
-      favoritesCount: 0,
-      author: {
-        username: null,
-        bio: null,
-        image: null,
-        following: true,
-      },
-    },
-    articlesCount: 0,
-    statusLoading: false,
-    error: '',
-  },
+  initialState: ActicleInitialState,
   reducers: {
     setArticleAC(state, payload) {
       state.articles = payload.payload.articles
@@ -172,5 +152,7 @@ const ArticleSlice = createSlice({
     },
   },
 })
+
+export const { setArticleAC, setSlugArticleAC, setFavoritedAC } = ArticleSlice.actions
 
 export default ArticleSlice.reducer

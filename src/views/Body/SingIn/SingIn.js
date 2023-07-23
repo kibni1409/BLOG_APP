@@ -2,12 +2,12 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-import { SingInThunk } from '../../../Redux/User/UserReducer'
-import { RouteArticle } from '../../../App'
-import { EmailValidate, PasswordValidate } from '../../Validation'
-import Input from '../../Input/Input'
-import Form from '../../Form/Form'
-import Button from '../../Button/Button'
+import { SingInThunk } from '../../../Redux/User/UserSlice'
+import { RouteArticle } from '../../../RoutePath'
+import { EmailValidate, PasswordValidate } from '../../../Validation'
+import Input from '../../../Components/Input/Input'
+import Form from '../../../Components/Form/Form'
+import Button from '../../../Components/Button/Button'
 
 const SingIn = () => {
   const state = useSelector((state) => state.User)

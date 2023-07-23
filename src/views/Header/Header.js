@@ -4,11 +4,11 @@ import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { OutThunk } from '../../Redux/User/UserReducer'
-import { RouteArticleFormWithAdd, RouteHome, RouteProfile, RouteSignIN, RouteSignUP } from '../../App'
+import { OutThunk } from '../../Redux/User/UserSlice'
+import { RouteArticleFormWithAdd, RouteHome, RouteProfile, RouteSignIN, RouteSignUP } from '../../RoutePath'
 import { getLocalStorage } from '../../DataAccessLayer/WorkWithLocalStorage'
+import Button from '../../Components/Button/Button'
 
-import Button from './../Button/Button'
 import Style from './Header.module.css'
 
 const HeaderComp = () => {

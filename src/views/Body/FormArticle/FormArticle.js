@@ -2,15 +2,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 
-import { postNewArticleThunk, updateArticleThunk } from '../../../Redux/Article/ArticleReducer'
-import { BodyValidate, DescriptionValidate, TittleValidate } from '../../Validation'
-import { RouteArticle, RouteHome, RouteSignIN } from '../../../App'
-import { getLocalStorage } from '../../../DataAccessLayer/WorkWithLocalStorage'
-import TagList from '../../TagList/TagList'
-
-import Form from './../../Form/Form'
-import Input from './../../Input/Input'
-import Button from './../../Button/Button'
+import { postNewArticleThunk, updateArticleThunk } from '../../../Redux/Article/ArticleSlice'
+import { BodyValidate, DescriptionValidate, TittleValidate } from '../../../Validation'
+import { RouteArticle, RouteHome, RouteSignIN } from '../../../RoutePath'
+import TagList from '../../../Components/TagList/TagList'
+import withAuth from '../../../HOC/withAuth'
+import Form from '../../../Components/Form/Form'
+import Input from '../../../Components/Input/Input'
+import Button from '../../../Components/Button/Button'
 
 const FormArticle = () => {
   const { mode } = useParams()
@@ -18,11 +17,7 @@ const FormArticle = () => {
   const [list, setList] = useState()
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const userLocal = getLocalStorage('user')
   useEffect(() => {
-    if (userLocal === null) {
-      navigate(RouteSignIN)
-    }
     if (mode !== 'add' && mode !== 'edit') {
       navigate(RouteSignIN)
     }
@@ -65,4 +60,4 @@ const FormArticle = () => {
   )
 }
 
-export default FormArticle
+export default withAuth(FormArticle)

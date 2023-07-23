@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Spin } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
-import { getArticleAllThunk } from '../../../Redux/Article/ArticleReducer'
+import { getArticleAllThunk } from '../../../Redux/Article/ArticleSlice'
 import PaginationJS from '../../Footer/Pagination'
+import withAuth from '../../../HOC/withAuth'
 
 import Article from './Article/Article'
 
-const ListArticle = React.memo(function ListArticle() {
+const ListArticle = memo(function ListArticle() {
   const dispatch = useDispatch()
   const state = useSelector((state) => state.Article)
   const [loading, setLoading] = useState(state.statusLoading)
@@ -28,4 +29,4 @@ const ListArticle = React.memo(function ListArticle() {
     </div>
   )
 })
-export default ListArticle
+export default withAuth(ListArticle)
