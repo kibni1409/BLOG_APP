@@ -1,0 +1,147 @@
+.card {
+  min-width: 320px;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  border-radius: 15px;
+  -webkit-box-shadow: 10px 10px 21px #d3d3d6, -10px -10px 21px #fff;
+          box-shadow: 10px 10px 21px #d3d3d6, -10px -10px 21px #fff;
+}
+
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+}
+
+.like {
+  margin-left: 10px;
+}
+
+.article {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  width: 642px;
+  text-align: left;
+}
+
+.title {
+  margin: 0;
+  max-height: 35px;
+  max-width: 550px;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+h2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Tag {
+  max-width: 100px;
+  overflow: hidden;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+  text-overflow: ellipsis;
+}
+
+.description {
+  max-width: 550px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tag {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  text-overflow: ellipsis;
+}
+
+.body {
+  max-width: 550px;
+  overflow-wrap: break-word;
+}
+
+.profile {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  height: 46px;
+}
+
+.profile_nameBlock {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.profile_img {
+  border-radius: 25px;
+  width: 44px;
+  height: 44px;
+}
+
+.profile_name {
+  font-size: 16px;
+}
+
+.profile_date {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
